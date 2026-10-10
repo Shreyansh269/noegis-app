@@ -1,0 +1,164 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-barlow), var(--font-inter), ui-sans-serif, sans-serif;
+
+  --color-ink: var(--ink);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-wine: var(--wine);
+  --color-wine-dark: var(--wine-dark);
+  --color-crimson: var(--crimson);
+
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+  --radius-4xl: 0px;
+}
+
+/* Single dark theme: black base, wine/crimson accents, no rounded corners. */
+:root {
+  color-scheme: dark;
+  --ink: #0a0a0b;
+  --surface: #131316;
+  --surface-2: #1b1b1f;
+  --wine: #7a1030;
+  --wine-dark: #3a0816;
+  --crimson: #e3173f;
+
+  --background: var(--ink);
+  --foreground: #ededf0;
+  --card: var(--surface);
+  --card-foreground: #ededf0;
+  --popover: var(--surface-2);
+  --popover-foreground: #ededf0;
+  --primary: var(--crimson);
+  --primary-foreground: #ffffff;
+  --secondary: var(--surface-2);
+  --secondary-foreground: #ededf0;
+  --muted: var(--surface-2);
+  --muted-foreground: #a0a0aa;
+  --accent: #26262c;
+  --accent-foreground: #ededf0;
+  --destructive: #ff4d6a;
+  --border: #2a2a31;
+  --input: #34343c;
+  --ring: var(--crimson);
+  --radius: 0px;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+  ::selection {
+    background: var(--crimson);
+    color: #fff;
+  }
+}
+
+@layer components {
+  /* Card with a cut top-right corner. */
+  .clip-chamfer {
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
+  }
+  .clip-chamfer-sm {
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+  }
+  /* Pointy-top hexagon for the profile photo. */
+  .clip-hex {
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  }
+  /* Parallelogram used for buttons and chips. */
+  .clip-slant {
+    clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+  }
+  .clip-slant-sm {
+    clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+  }
+
+  .btn-slant {
+    @apply clip-slant inline-flex items-center gap-2 bg-crimson px-7 py-3 font-display text-sm font-semibold uppercase tracking-[0.2em] text-white transition-colors hover:bg-wine focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-crimson disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .btn-slant-ghost {
+    @apply clip-slant inline-flex items-center gap-2 bg-surface-2 px-7 py-3 font-display text-sm font-semibold uppercase tracking-[0.2em] text-foreground transition-colors hover:bg-wine focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-crimson disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .chip-slant {
+    @apply clip-slant-sm inline-block bg-wine-dark px-3 py-1 font-display text-xs font-semibold uppercase tracking-widest text-pink-100;
+  }
+
+  .tech-card {
+    @apply clip-chamfer border-t-2 border-wine bg-surface transition-[transform,border-color] duration-300 ease-out hover:-translate-y-1 hover:border-crimson;
+  }
+
+  .section-eyebrow {
+    @apply font-display text-xs font-semibold uppercase tracking-[0.35em] text-crimson;
+  }
+  .section-title {
+    @apply font-display text-4xl font-bold uppercase tracking-wider text-foreground md:text-5xl;
+  }
+}
+
+/* Scroll reveal (driven by components/portfolio/reveal.tsx). */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s ease-out,
+    transform 0.7s ease-out;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal,
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .tech-card {
+    transition: none;
+  }
+  .tech-card:hover {
+    transform: none;
+  }
+}
