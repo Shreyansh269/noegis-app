@@ -1,0 +1,18 @@
+Merge these into YOUR existing app.json (keep everything you already have, such as "name", "scheme", "icon", "plugins").
+
+Inside "expo":
+
+  "android": {
+    "package": "com.shreyansh.noegis",
+    "permissions": ["android.permission.PACKAGE_USAGE_STATS"]
+  },
+
+Add this entry to the existing "plugins" array (keep expo-router etc.):
+
+  ["expo-build-properties", { "android": { "usesCleartextTraffic": true } }]
+
+Notes:
+- "android.package" is required for prebuild; any unique reverse-domain name works.
+- PACKAGE_USAGE_STATS is a special permission. It cannot be requested with a pop-up;
+  the user switches it on in Settings > Usage access (the app opens that page for them).
+- usesCleartextTraffic lets the app call http://<your-pc-ip>:1234 (LM Studio). Android blocks plain http otherwise.
